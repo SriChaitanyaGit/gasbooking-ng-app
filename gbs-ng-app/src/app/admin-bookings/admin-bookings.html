@@ -1,0 +1,29 @@
+<div class="admin-booking-container">
+  <h2>Book Gas for Customer</h2>
+
+  <div class="form-group">
+    <label>Customer Email:</label>
+    <input type="email" [(ngModel)]="booking.email" placeholder="Enter Customer Email">
+  </div>
+
+  <div class="form-group">
+    <label>Gas Agency:</label>
+    <select [(ngModel)]="booking.agencyId">
+      <option *ngFor="let a of agencies" [value]="a.gasid">
+        {{ a.name }} - {{ a.location }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Cylinder Type:</label>
+    <select [(ngModel)]="booking.cylinderType">
+      <option value="Domestic">Domestic</option>
+      <option value="Commercial">Commercial</option>
+    </select>
+  </div>
+
+  <button class="book-btn" (click)="bookGas()">Book Gas</button>
+
+  <div *ngIf="message" class="message">{{ message }}</div>
+</div>

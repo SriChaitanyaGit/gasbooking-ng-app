@@ -1,0 +1,170 @@
+<!-- Navigation Bar -->
+<div class="home-wrapper">
+  <nav class="navbar">
+    <div class="nav-left">
+      <h2>Welcome, {{ adminName }}</h2>
+    </div>
+    <div class="nav-right">
+      <button (click)="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Success Message -->
+  <div *ngIf="message" class="message-box">{{ message }}</div>
+
+  <!-- Admin Dashboard Cards -->
+  <div class="admin-dashboard-cards">
+    <div class="admin-card" (click)="fetchAllCustomers()">
+      <h3>View All Customers</h3>
+      <p>Check all registered customers in the system</p>
+    </div>
+
+    <div class="admin-card" (click)="openAddAgencyForm()">
+      <h3>Add Gas Agency</h3>
+      <p>Register a new gas agency with its details</p>
+    </div>
+
+    <div class="admin-card" (click)="fetchAllAgencies()">
+      <h3>View All Gas Agencies</h3>
+      <p>Browse all gas agencies currently listed</p>
+    </div>
+
+    <div class="admin-card" (click)="navigateToAddCustomer()">
+      <h3>Add Customer</h3>
+      <p>Register a new customer account</p>
+    </div>
+
+    <div class="admin-card" (click)="fetchBookingRequests()">
+      <h3>Booking Requests</h3>
+      <p>Manage customer booking requests for gas</p>
+    </div>
+  </div>
+
+  <!-- Booking Requests Section -->
+  <div *ngIf="showBookingRequests" class="main-section">
+    <h3>Booking Requests</h3>
+
+    <div class="search-container">
+      <input type="text" placeholder="Search by name, email, or phone" [(ngModel)]="bookingSearchTerm" class="search-bar" />
+      <button (click)="searchBookingRequests()">Search</button>
+      <button (click)="fetchBookingRequests()">Reset</button>
+    </div>
+
+    <div class="booking-section">
+      <div class="booking-card" *ngFor="let b of bookingRequests">
+        <h4>{{ b.customerName }} <small>({{ b.customerEmail }})</small></h4>
+        <p><strong>Phone:</strong> {{ b.customerPhone }}</p>
+        <p><strong>Gas Type:</strong> {{ b.cylinderType }}</p>
+        <p><strong>Booking Date:</strong> {{ b.bookingDate }}</p>
+        <p><strong>Delivery Location:</strong> {{ b.deliveryLocation }}</p>
+        <p><strong>Status:</strong> {{ b.status }}</p>
+
+      <!-- Delivery Status Controls -->
+<div class="delivery-status">
+  <p><strong>Delivery Status:</strong> {{ b.deliveryStatus || 'Pending' }}</p>
+
+  <!-- Buttons only show if status is not set -->
+  <div *ngIf="!b.deliveryStatus">
+    <button (click)="updateDeliveryStatus(b.bookingid, 'Shipped')">🚚 Mark as Shipped</button>
+    <button (click)="updateDeliveryStatus(b.bookingid, 'Out for Delivery')">📦 Out for Delivery</button>
+    <button (click)="updateDeliveryStatus(b.bookingid, 'Delivered')">✅ Mark as Delivered</button>
+  </div>
+
+  <!-- Show confirmation after status is set -->
+  <div *ngIf="b.deliveryStatus">
+    <span class="locked-status">✅ Status locked as: <strong>{{ b.deliveryStatus }}</strong></span>
+  </div>
+</div>
+
+
+
+        <!-- Booking Approve/Reject Actions -->
+        <div *ngIf="b.status === 'In Progress'" class="booking-actions">
+          <button class="approve-btn" (click)="approveBooking(b.bookingid)">Approve</button>
+          <button class="reject-btn" (click)="b.showReject = true">Reject</button>
+          <div *ngIf="b.showReject" class="reject-box">
+            <textarea [(ngModel)]="b.rejectionReason" placeholder="Enter rejection reason" rows="2"></textarea>
+            <button (click)="rejectBooking(b.bookingid, b.rejectionReason)">Submit Rejection</button>
+          </div>
+        </div>
+
+        <button class="delete-booking-btn" (click)="deleteBooking(b.bookingid)">Delete Booking</button>
+
+        <div *ngIf="b.status === 'Rejected' && b.rejectionReason">
+          <p><strong>Rejection Reason:</strong> {{ b.rejectionReason }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customers Section -->
+  <div *ngIf="showCustomers" class="main-section">
+    <h3>Search Customer</h3>
+    <div class="search-container">
+      <input type="text" placeholder="Search by name/email/phone" [(ngModel)]="searchTerm" (input)="searchCustomers()" class="search-bar" />
+      <button (click)="searchCustomers()">Search</button>
+    </div>
+
+    <div class="customer-container">
+      <div class="customer-card" *ngFor="let c of customers">
+        <div class="profile-icon">{{ c.name.charAt(0).toUpperCase() }}</div>
+        <h3>{{ c.name }}</h3>
+        <p><strong>Email:</strong> {{ c.email }}</p>
+        <p><strong>Phone:</strong> {{ c.phone }}</p>
+        <p><strong>Role:</strong> {{ c.role }}</p>
+        <div class="actions">
+          <button class="update-btn" (click)="editCustomer(c)">Update</button>
+          <button class="delete-btn" (click)="deleteCustomer(c.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Customer Form -->
+  <div *ngIf="selectedCustomer" class="edit-form">
+    <h3>Edit Customer</h3>
+    <label>Name: <input [(ngModel)]="selectedCustomer.name" /></label><br />
+    <label>Email: <input [(ngModel)]="selectedCustomer.email" disabled /></label><br />
+    <label>Phone: <input [(ngModel)]="selectedCustomer.phone" /></label><br />
+    <label>Role: <input [(ngModel)]="selectedCustomer.role" disabled /></label><br />
+    <label>New Password: <input [(ngModel)]="newPassword" type="password" /></label><br />
+    <button class="save-btn" (click)="updateCustomer()">Save</button>
+    <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+  </div>
+
+  <!-- Add Gas Agency Form -->
+  <div *ngIf="showAddAgencyForm" class="edit-form">
+    <h3>Add New Gas Agency</h3>
+    <label>Name: <input [(ngModel)]="newAgency.name" /></label><br />
+    <label>Location: <input [(ngModel)]="newAgency.location" /></label><br />
+    <label>Domestic Cylinders: <input type="number" [(ngModel)]="newAgency.domesticCylinders" /></label><br />
+    <label>Commercial Cylinders: <input type="number" [(ngModel)]="newAgency.commercialCylinders" /></label><br />
+    <button class="save-btn" (click)="addGasAgency()">Add Agency</button>
+    <button class="cancel-btn" (click)="cancelAddAgency()">Cancel</button>
+  </div>
+
+  <!-- Gas Agencies Section -->
+  <div *ngIf="showAgencies" class="agency-section">
+    <div class="agency-card" *ngFor="let a of agencies">
+      <h3>{{ a.name }}</h3>
+      <p><strong>Location:</strong> {{ a.location }}</p>
+      <p><strong>Domestic Cylinders:</strong> {{ a.domesticCylinders }}</p>
+      <p><strong>Commercial Cylinders:</strong> {{ a.commercialCylinders }}</p>
+      <div class="actions">
+        <button class="update-btn" (click)="editAgency(a)">Update</button>
+        <button class="delete-btn" (click)="deleteAgency(a.gasid)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Gas Agency Form -->
+  <div *ngIf="selectedAgency" class="edit-form">
+    <h3>Edit Gas Agency</h3>
+    <label>Name: <input [(ngModel)]="selectedAgency.name" /></label><br />
+    <label>Location: <input [(ngModel)]="selectedAgency.location" /></label><br />
+    <label>Domestic Cylinders: <input type="number" [(ngModel)]="selectedAgency.domesticCylinders" /></label><br />
+    <label>Commercial Cylinders: <input type="number" [(ngModel)]="selectedAgency.commercialCylinders" /></label><br />
+    <button class="save-btn" (click)="updateAgency()">Save</button>
+    <button class="cancel-btn" (click)="cancelEditAgency()">Cancel</button>
+  </div>
+</div>

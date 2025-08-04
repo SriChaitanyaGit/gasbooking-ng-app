@@ -1,0 +1,25 @@
+<div style="justify-content: left">
+ <div class="book-gas-header">
+  <button class="back-btn-small" (click)="goBack()">⬅ Back</button>
+</div>
+</div>
+<div class="payment-container">
+  <h2>Complete Your Payment</h2>
+  <p>Scan the QR code to pay ₹{{ amount }} for your {{ cylinderType }} cylinder.</p>
+
+  <div class="payment-summary">
+    <p><strong>Agency:</strong> {{ agencyName }}</p>
+    <p><strong>Cylinder Type:</strong> {{ cylinderType }}</p>
+    <p><strong>Amount:</strong> ₹{{ amount }}</p>
+  </div>
+
+  <div class="qr-section">
+    <p>Scan the QR code below to pay:</p>
+    <img [src]="qrCodeUrl" alt="UPI QR Code" class="qr-code" />
+    <p><strong>UPI ID:</strong> {{ upiId }}</p>
+  </div>
+
+  <div class="confirm-button">
+    <button (click)="completePayment()">I have completed the payment</button>
+  </div>
+</div>

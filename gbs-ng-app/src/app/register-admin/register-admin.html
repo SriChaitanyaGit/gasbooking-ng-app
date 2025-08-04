@@ -1,0 +1,54 @@
+<body>
+<div class="register-container">
+  <h2>Register for Gas Booking</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <label>Full Name <span class="required">*</span></label>
+    <input type="text" formControlName="name" />
+    <div class="error" *ngIf="name?.touched && name?.invalid">
+      Name must be at least 5 characters.
+    </div>
+
+    <label>Email <span class="required">*</span></label>
+    <input type="email" formControlName="email" />
+    <div class="error" *ngIf="email?.touched && email?.invalid">
+      Enter a valid email containing &#64; and ending with .com
+    </div>
+
+    <label>Address</label>
+    <input type="text" formControlName="address" />
+
+    <label>Phone Number <span class="required">*</span></label>
+    <input type="tel" formControlName="phone" />
+    <div class="error" *ngIf="phone?.touched && phone?.invalid">
+      Phone must be a 10-digit number starting with +91.
+    </div>
+
+    <label>Password <span class="required">*</span></label>
+    <input
+      type="password"
+      formControlName="password"
+      (input)="checkPasswordStrength()"
+      (focus)="onPasswordFocus()"
+      (blur)="onPasswordBlur()" />
+    <div class="strength" *ngIf="passwordStrength && (passwordFocused || passwordValid)">
+      {{ passwordStrength }}
+    </div>
+    <div class="error" *ngIf="password?.touched && password?.invalid">
+      Must include uppercase, lowercase, number, and symbol.
+    </div>
+
+    <label>Role <span class="required">*</span></label>
+    <select formControlName="role">
+      <option value="" disabled>Select Role</option>
+      
+      <option value="admin">Admin</option>
+    </select>
+    <div class="error" *ngIf="role?.touched && role?.invalid">
+      Role selection is required.
+    </div>
+
+    <button type="submit">Register</button>
+    <button type="button" class="secondary-btn" (click)="navigateToLogin()">Already registered?</button>
+  </form>
+</div>
+</body>

@@ -1,0 +1,12 @@
+<h2>Your Booking History</h2>
+
+<div *ngIf="bookings.length === 0">No bookings found.</div>
+
+<div class="booking-card" *ngFor="let b of bookings">
+  <p><strong>Booking ID:</strong> {{ b.bookingid }}</p>
+  <p><strong>Agency ID:</strong> {{ b.agencyid }}</p>
+  <p><strong>Cylinder Type:</strong> {{ b.cylinderType }}</p>
+  <p><strong>Status:</strong> {{ b.status }}</p>
+  <p><strong>Booking Date:</strong> {{ b.bookingDate }}</p>
+  <p *ngIf="b.deliveryDate"><strong>Delivery Date:</strong> {{ b.deliveryDate }}</p>
+</div>
