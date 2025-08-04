@@ -1,0 +1,74 @@
+<nav class="navbar">
+  <div class="logo"><marquee>AGCA GAS Bookings</marquee></div>
+  <div class="nav-links">
+    <a routerLink="/home">Home</a>
+    <a routerLink="/login">Customer Login</a>
+    <a routerLink="/register">Customer Register</a>
+    <a routerLink="/login-admin">Admin Login</a>
+    <a routerLink="/admin-register">Admin Register</a>
+  </div>
+</nav>
+
+<div class="home-wrapper">
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>AGCA GAS Bookings</h1>
+    <p>Fast • Reliable • Affordable Gas Booking Service</p>
+  </section>
+
+  <!-- Customer & Admin Panels -->
+  <section class="split-panels">
+    <!-- Customer Panel -->
+    <div class="panel customer-panel">
+      <img src="assets/customer.jpg" alt="Customer Portal" />
+      <h2>Customer Portal</h2>
+      <p>Book cylinders, track orders, and handle payments all in one place.</p>
+      <div class="buttons">
+        <button routerLink="/login" class="btn">Customer Login</button>
+        <button routerLink="/register" class="btn">Register as Customer</button>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="panel admin-panel">
+      <img src="assets/admin.png" alt="Admin Panel" />
+      <h2>Admin Panel</h2>
+      <p>Manage customer bookings, payments, and gas agencies efficiently.</p>
+      <div class="buttons">
+        <button routerLink="/login-admin" class="btn">Admin Login</button>
+        <button routerLink="/admin-register" class="btn">Register as Admin</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a routerLink="/login">Customer Login</a></li><br>
+          <li><a routerLink="/register">Customer Registration</a></li><br>
+          <li><a routerLink="/login-admin">Admin Login</a></li><br>
+          <li><a routerLink="/admin-register">Admin Registration</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="#">FAQs</a></li><br>
+          <li><a href="#">Privacy Policy</a></li><br>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <p>Email: support&#64;AGCA.com</p>
+        <p>Phone: +91 8688653851</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AGCA GAS Bookings | Built by ROLLA, SUGGU, AKSHITH, CHAITU 🚀</p>
+    </div>
+  </footer>
+</div>
