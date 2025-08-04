@@ -1,0 +1,153 @@
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo"><marquee>AGCA GAS BOOKINGS</marquee></div>
+  <button (click)="viewAgencies()">View Gas Agencies</button>
+
+  <div class="profile-dropdown">
+    <img [src]="photoUrl || 'assets/profileicon.png'" alt="Profile" class="profile-icon" (click)="toggleDropdown()" />
+    <div class="dropdown-content" *ngIf="showDropdown">
+      <div class="profile-photo-preview" *ngIf="photoUrl">
+        <img [src]="photoUrl" alt="Uploaded Photo" class="uploaded-photo" />
+      </div>
+      <input type="file" accept="image/*" (change)="onPhotoSelected($event)" />
+      <button (click)="uploadPhoto()">Upload Photo</button>
+
+      <p><strong>Name:</strong> {{ profileDetails.name }}</p>
+      <p><strong>Email:</strong> {{ profileDetails.email }}</p>
+      <p><strong>Phone:</strong> {{ profileDetails.phone }}</p>
+      <p><strong>Role:</strong> {{ profileDetails.role }}</p>
+      <button (click)="customerprofile()">View Profile</button>
+      <button class="logout-btn" (click)="navigateTologin()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard" *ngIf="!showAgencies && !showBookings">
+  <div class="banner">
+    <div class="banner-text">
+      <h1>Welcome, {{ customerName }}!</h1>
+      <p>Manage your gas bookings with ease. Book, track, and get support — all in one place.</p>
+      <div class="banner-buttons">
+        <button (click)="viewAgencies()">View Agencies</button>
+        <button (click)="viewBookings()">Track My Bookings</button>
+      </div>
+    </div>
+    <div class="banner-image">
+      <img src="https://cdn-icons-png.flaticon.com/512/2933/2933245.png" alt="Gas Booking">
+    </div>
+  </div>
+
+  <h2 class="section-title">Our Services</h2>
+  <div class="features">
+    <div class="feature-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/2983/2983795.png" alt="Book Gas Cylinder">
+      <h3>Book Gas Cylinder</h3>
+      <p>Quickly book domestic or commercial cylinders.</p>
+    </div>
+    <div class="feature-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Track Bookings">
+      <h3>Track Bookings</h3>
+      <p>Check the status of your gas bookings anytime.</p>
+    </div>
+    <div class="feature-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="24/7 Support">
+      <h3>24/7 Support</h3>
+      <p>Our team is here to help you anytime.</p>
+    </div>
+  </div>
+</div>
+
+<!-- GAS AGENCIES -->
+<div class="agency-section" *ngIf="showAgencies">
+  <div class="agency-card" *ngFor="let a of agencies">
+    <h3>{{ a.name }}</h3>
+    <p><strong>Location:</strong> {{ a.location }}</p>
+    <p><strong>Domestic Cylinders:</strong> {{ a.domesticCylinders }}</p>
+    <p><strong>Commercial Cylinders:</strong> {{ a.commercialCylinders }}</p>
+    <button (click)="bookGasFromAgency(a.gasid)">Book Gas</button>
+  </div>
+</div>
+
+<!-- TRACK MY BOOKINGS -->
+<div class="bookings-section" *ngIf="showBookings">
+  <button class="back-btn" (click)="goBack()">⬅ Back</button>
+  <h3>My Bookings</h3>
+  <div *ngIf="bookings.length === 0">No bookings found.</div>
+
+  <div *ngFor="let booking of bookings" class="booking-card">
+    <p><strong>Booking ID:</strong> {{ booking.bookingid }}</p>
+    <p><strong>Cylinder Type:</strong> {{ booking.cylinderType }}</p>
+
+    <p><strong>Booking Status:</strong> 
+      <span [ngClass]="{
+        'status-progress': booking.status?.trim().toUpperCase() === 'IN_PROGRESS',
+        'status-confirmed': booking.status?.trim().toUpperCase() === 'CONFIRMED',
+        'status-canceled': booking.status?.trim().toUpperCase() === 'CANCELED'
+      }">
+        {{ booking.status }}
+      </span>
+    </p>
+
+    <p><strong>Delivery Status:</strong> 
+      <span [ngClass]="{
+        'status-progress': booking.deliveryStatus?.trim().toUpperCase() === 'IN_PROGRESS',
+        'status-ready': booking.deliveryStatus?.trim().toUpperCase() === 'READY_TO_SHIP',
+        'status-delivered': booking.deliveryStatus?.trim().toUpperCase() === 'DELIVERED'
+      }">
+        {{ booking.deliveryStatus }}
+      </span>
+    </p>
+
+    <p><strong>Delivery Location:</strong> {{ booking.deliveryLocation }}</p>
+    <p><strong>Booking Date:</strong> {{ booking.bookingDate }}</p>
+    <p><strong>Expected Delivery Date:</strong> {{ booking.deliveryDate }}</p>
+
+    <!-- Cancel Booking button -->
+    <button 
+      *ngIf="booking.status?.trim().toUpperCase() === 'IN PROGRESS'" 
+      (click)="cancelBooking(booking.bookingid)">
+      Cancel Booking
+    </button>
+
+    <!-- Make Payment button -->
+<button 
+  *ngIf="booking.showMakePayment"
+  class="make-payment-btn"
+  (click)="makePayment(booking)">
+  Make Payment
+</button>
+
+  </div>
+</div>
+
+
+
+<!-- FEEDBACK SECTION -->
+<div class="feedback-section">
+  <h2>We Value Your Feedback</h2>
+  <p>Share your thoughts to help us improve our services.</p>
+  <textarea [(ngModel)]="feedbackMessage" placeholder="Type your feedback here..."></textarea>
+  <div class="button-wrapper">
+    <button (click)="submitFeedback()">Submit Feedback</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-left">
+      <h3>AGCA GAS BOOKINGS</h3>
+      <p>Your trusted partner for quick and reliable gas cylinder bookings.</p>
+    </div>
+    <div class="footer-right">
+      <h4>Contact Us</h4>
+      <p>Email: support&#64;agcagas.com</p>
+      <p>Phone: +91-9876543210</p>
+      <p>Address: Hyderabad, India</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 AGCA Gas Bookings. All rights reserved. | Designed with ❤️ for customers</p>
+  </div>
+  <a href="#" class="back-to-top" (click)="scrollToTop($event)">⬆ Back to Top</a>
+</footer>

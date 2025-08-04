@@ -1,0 +1,9 @@
+<div class="login-container">
+  <h2>Login as Admin</h2>
+  <form (ngSubmit)="onLoginAdmin()" #loginForm="ngForm">
+    <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
+    <input type="password" name="password" [(ngModel)]="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+    <button type="button" class="secondary-btn" (click)="navigateToRegisterAdmin()">Don't have an account?</button>
+  </form>
+</div>

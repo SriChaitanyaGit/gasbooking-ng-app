@@ -1,0 +1,42 @@
+<div class="profile-view">
+  <h2>Your Profile</h2>
+
+  <div *ngIf="message" class="message" [ngClass]="messageType">{{ message }}</div>
+
+
+  <div *ngIf="profile && profile.name">
+    <form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+      <p>
+        <label><strong>Name:</strong></label>
+        <input type="text" [(ngModel)]="profile.name" name="name" required />
+      </p>
+      <p>
+        <label><strong>Email:</strong></label>
+        <input type="email" [(ngModel)]="profile.email" name="email" required readonly />
+      </p>
+      <p>
+        <label><strong>Phone:</strong></label>
+        <input type="text" [(ngModel)]="profile.phone" name="phone" required />
+      </p>
+      <p>
+        <label><strong>Role:</strong></label>
+        <input type="text" [(ngModel)]="profile.role" name="role" readonly />
+      </p>
+      <button type="submit">Update Profile</button>
+    </form>
+
+    <hr />
+
+    <form (ngSubmit)="updatePassword()" #passwordForm="ngForm">
+      <p>
+        <label><strong>New Password:</strong></label>
+        <input type="password" [(ngModel)]="newPassword" name="newPassword" required />
+      </p>
+      <p>
+        <label><strong>Confirm Password:</strong></label>
+        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+      </p>
+      <button type="submit">Update Password</button>
+    </form>
+  </div>
+</div>
